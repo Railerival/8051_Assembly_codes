@@ -1,0 +1,7 @@
+MOV A, #0A0H
+ADD A, #0A0H
+MOV R6, A
+
+CLR A
+ADDC A, #00H
+MOV R7, A
