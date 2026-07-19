@@ -13,8 +13,8 @@ programs
 ├ 8bit_multiplication.asm
 ├ 8bit_division.asm
 ```
-there is no case sensitivity in this assembly, moreover u can jumble it - `Mov`
-`ADDC` = `accumulator` + `source` + `CY`
-`SUBB` = `accumulator` - `source` - `CY`
-`MUL AB` = `A` stores lower byte, `B` stores upper byte
-`DIV AB` = `A` stores quotient and `B` stores reminder
+there is no case sensitivity in this assembly, moreover u can jumble it - `Mov`  
+* `ADDC` = `accumulator` + `source` + `CY`  
+* `SUBB` = `accumulator` - `source` - `CY`  
+* `MUL AB` = `A` stores lower byte, `B` stores upper byte  
+* `DIV AB` = `A` stores quotient and `B` stores reminder  
