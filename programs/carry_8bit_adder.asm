@@ -1,1 +1,7 @@
-ORG 
+MOV A, #30H
+ADD A, #50H
+MOV R6, A
+
+CLR A
+ADDC A, #00H
+MOV R7, A
