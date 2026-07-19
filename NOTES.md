@@ -136,5 +136,52 @@ POP 05  ; Pop value from stack to R5
 #### Indexed addressing mode
 idk what this is gang
 
-### MOV  
+### Assembly instructions
+#### MOV
+* Destination cannot be immediate data
+```
+MOV A. #5 ; ✅
+MOV #5, A ; ❌️
+```
+* All numbers must start with 0-9
+```
+MOV A. #25H ; ✅
+MOV A. #0FFH ; ✅
+MOV A, #FFH ; ❌️
+```
+* Register - register moves using register addressing: R0-7 and A
+```
+MOV R0, A ; ✅
+MOV A, R0 ; ✅
+MOV R0, R1 ; ❌️
+```
+* Invlaid address above 7FH
+```
+MOV A, 30H ; ✅
+MOV A, 80H ; ❌️
+```
+Why?: As said above we know that after `7FH` is for SFR
+* Data transfer to ports smt smt
+idk what this is legit
 
+* No data transfer from direct address to itself
+MOV 30H, 30H
+
+#### MOV X
+
+### Instructions affecting flag
+`ADD`
+`ADDC`
+`SUBB`
+`MUL`
+`DIV`
+`ANL C, direct`
+`ORL C, direct`
+`MOV C, direct`
+`CLR C`
+`CPL C`
+`DA A`
+`RLC`  not sure about this 
+`RRC`  not sure about this 
+`CJNE`
+`SETB C` not sure about this 
