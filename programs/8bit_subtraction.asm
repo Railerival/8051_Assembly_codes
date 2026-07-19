@@ -1,0 +1,5 @@
+CLR C
+MOV A, #3FH
+SUBB A, #23H
+MOV R7, A
+
