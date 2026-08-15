@@ -1,6 +1,6 @@
 # 8051_Assembly_codes
 i m using the 8051 simulator - `edsim51`
-and learning from the book "The 8051 microcontroller and embedded systems by Muhammad Ali Mazidi"
+and learning from the book "The 8051 microcontroller and embedded systems by Muhammad Ali Mazidi" and some pdf notes
 
 ### Program folder structure
 ```

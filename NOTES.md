@@ -1,4 +1,9 @@
 # Notes
+
+RAM - Data memory  
+ROM = Code memory / Program memory
+
+---
 `00H` – `1FH`  → 4 register banks  
 `20H` – `2FH`  → bit addressable area  
 `30H` – `7FH`  → general purpose RAM 
@@ -8,7 +13,8 @@
 
 ![8051_Programming_model](image-3.png)  
  
-Learn the Internal ram locations and the ones below  
+Some important internal ram locations:
+
 `PSW` - flags  
 `TMOD`/`TCON` - Timers  
 `SCON`/`SBUF` - Serial port  
@@ -225,6 +231,57 @@ eg:
 
 when i do `MOVC A, @A+DPTR` we go to the address `(1234+3)H` that is `1237H`
 where `44` data is stored
+
+#### PUSH/POP
+* Stack is a region of RAM used for temporarily storing and receiving data.  
+The stack pointer register tracks the top of the stack.
+
+![Stack](stack.gif)
+
+* PUSH - SP increments by 1, copies byte at the address to the stack
+* POP - SP decrements by 1 after copying the top oof the stack to the address.
+`PUSH 00H` is ram's address value being pushed 
+* `81H` is the SFR address's value being pushed
+```asm
+MOV 81H, #30H
+MOV R0, #0ACH
+PUSH 00H
+PUSH 00H
+POP 01H
+POP 80H
+```
+
+#### XCH, XCHD
+```asm
+XCH A, R7
+XCH A, 0F0H
+XCH A, @R1 ; swap stuff from what R1 address has to A
+XCHD A, @R1
+```
+`XCHD` - exchanges lower nibble only 
+* `A` is always used either as source or destination ....
+* exchange are always internal 
+* `XCHD` only works with indirect addressing
+* both `XCH` and `XCHD` can use `@Ri` where `Ri` is `R0` or `R1`.  
+
+### Logic byte instructions
+
+### Arithmetic instructions
+`INC`, `DEC`, `ADD`, `ADDC`, `SUBB`, `MUL AB`, `DIV AB`, `DA A`  
+
+```asm
+ADD A, Rn  ; A = A + Rn
+ADD A, #n  ; A = A + immediate
+ADDC A, Rn ; A = A + Rn + Carry (for 16 bit addition)
+SUBB A, Rn ; A = A - Rn - Carry
+INC A      ; A = A + 1
+DEC A      ; A = A - 1
+INC Rn     ; Rn = Rn + 1
+DEC Rn     ; Rn = Rn - 1
+MUL AB     ; AxB result stored as: A (Lower bytes) - B (Higher bytes)
+DIV AB     ; A/B result stored as: quotient in A reminder in B
+DA A       ; Decimal adjust after BCD addition
+```
 
 
 ### Instructions affecting flag
