@@ -56,6 +56,7 @@ R1 BANK 1 - 09H
 ---
 
 ### Fullforms
+
 ```
 A    - Accumulator
 B    - Math register
@@ -95,6 +96,7 @@ P   - Parity flag(1 if odd no.of 1s in accumulator)
 | 3          | 1            | 1           |
 ---
 ### Addressing modes
+
 -> Immediate addressing mode   
 -> Register addressing mode   
 -> Direct addressing mode  
@@ -103,12 +105,14 @@ P   - Parity flag(1 if odd no.of 1s in accumulator)
 -> Stack addressing mode  
 
 #### Immediate addressing mode
+
 ```asm
 MOV Rr, #n ; Copy 8 bit number n into Rr
 MOV A, #n ; Copy 8 bit number n into A
 MOV DPTR, #n ; Copy 16 bit number n into DPTR
 ```
 #### Register addressing mode
+
 ```asm
 MOV Rr, A ; Copy data from A to Rr
 MOV A, Rr ; Copy data from Rr to A
@@ -118,6 +122,7 @@ MOV DPTR, A  ; ❌️
 MOV R7, DPH  ; ✅
 
 #### Direct addressing mode
+
 ```asm
 MOV Rr, add ; add is address
 MOV add, Rr
@@ -142,15 +147,19 @@ at`DPTR` register. `@` only used in registers who have literals stored
 but they are actually addresses.
 
 #### Stack addressing mode
+
 ```asm
 PUSH 05 ; Push value from R5 to stack
 POP 05  ; Pop value from stack to R5
 ```
 #### Indexed addressing mode
+
 idk what this is gang
 
 ### Assembly instructions
+
 #### MOV
+
 * Destination cannot be immediate data
 ```
 MOV A. #5 ; ✅
@@ -181,6 +190,7 @@ idk what this is legit
 MOV 30H, 30H
 
 #### MOVX
+
 * External RAM or I/O addressses (Sometimes they also wire external devices (like sensors or screens) so they act like memory addresses—this is called memory-mapped I/O)
 * Indirect addressing is used here always
 * All external data moves involve accumulator
@@ -204,6 +214,7 @@ Because external memory is huge (up to 64KB), an 8-bit register cannot hold the 
 **R0 and R1**: These are only 8-bit registers. They can only hold addresses from 00H to FFH (256 bytes). This is called "paged" memory access. It is used when you have a very small external RAM chip and want to save code space, as 8-bit pointers process slightly faster than the 16-bit DPTR
 
 #### MOVC 
+
 * Can be used with internal or external ROM to A
 * Indirect addressing is used here always
 * Destination is always A
@@ -233,6 +244,7 @@ when i do `MOVC A, @A+DPTR` we go to the address `(1234+3)H` that is `1237H`
 where `44` data is stored
 
 #### PUSH/POP
+
 * Stack is a region of RAM used for temporarily storing and receiving data.  
 The stack pointer register tracks the top of the stack.
 
@@ -252,6 +264,7 @@ POP 80H
 ```
 
 #### XCH, XCHD
+
 ```asm
 XCH A, R7
 XCH A, 0F0H
@@ -265,6 +278,99 @@ XCHD A, @R1
 * both `XCH` and `XCHD` can use `@Ri` where `Ri` is `R0` or `R1`.  
 
 ### Logic byte instructions
+
+`ANL`, `ORL`, `XRL`, `CLR A`, `CPL A`, `RL A`, `RLC A`, `RR A`, `RRC A`, `SWAP A`
+
+* `ANL A, #n` - AND each bit of A with same bit of n and put result in A
+* `ANL A, add` - the value at add and A
+* `ANL A, Rr`
+* `ANL A, @Rp`
+* `ANL add, A`
+* `ANL add, #n`
+<br>
+<br>
+* `CLR A` - clear all bits to 0
+* `CPL A` - complement of all bits
+<br>
+<br>
+* `RL` - Rotate a byte to the left,MSB becomes LSB
+* `RR` - Rotate a byte to the right, LSB becomes MSB
+* `RLC`  Same as with RL but with carry
+* `RRC` - Same as with RR but with carry
+<br>
+<br>
+* `SWAP` - Swap upper and lower nibbles.
+<br>
+<br>
+* These instructons can have an source but destination must be `A` or a `direct address`
+
+### Logical bit instructions
+
+`ANL`, `ORL`, `CLR`, `CPL`, `MOV`, `SETB`
+* `SETB` - set a bit to `1`
+* `SETB C` - set a carry to 1
+* `SETB P1.0` - Make `P1.0` high
+<br>
+<br>
+* `CLR C` - clear a bit to 0, carry
+* `CLR P1.0` - clears `P1.0` 
+<br>
+<br>
+* `CPL C`
+* `CPL P1.0`
+<br>
+<br>
+* `ANL C,b` - C = C and bit
+* `ORL C,b` - C = C or bit
+* `ANL C,/b` - C = C and complement of bit
+* `ORL C,/b` - C = C or complement of bit
+<br>
+<br>
+* Works only on bit addressible locatios 
+
+Bit addressible exact locations are not writen here:
+
+### Program branching instructions
+
+Basically decisions and jumps around program
+
+#### Unconditional jumps
+```asm
+SJMP radd ; range -128 to +128
+LJMP ladd ; long jump a, anywhere 64K memory
+AJMP sadd ; absolute jump, within 2K page
+NOP ; do nothing waste one cycle
+```
+#### Bit jumps
+```
+JC radd ; jump if carry = 1
+JNC radd ; jump if carry = 0
+JB b, radd ; Jump if bit b = 1
+JNB b, radd ; jump if bit b = 0
+JBC b, radd ; JUmp if bit b = 1, then clear bit
+```
+eg: `JC OVER` - if carry `1` jump to `OVER`
+#### Byte jumps
+```
+JZ radd ; jump if A = 0
+JNZ radd ; jump if A not equal to 0
+DJNZ Rn, radd ; Decrement Rn, jump if not zero
+CJNE A, #n, radd ; Compare A with n and jump if not equal
+```
+#### Calls and returns
+```
+ACALL sadd ; call a subroutine short range
+LCALL ladd ; call a subroutine long range
+RET ; return from a subroutine
+RET I ; return from interrupt
+```
+* `AJMP` - jumps within 2K page..
+* `CJNE A, #n, radd`  
+A is not equal to n -> jump  
+A < n -> `CY` = `1`
+A > n -> `CY` = `0`
+* `RET1 ; returns from interrupt service routine
+also resets interrupt flip flops
 
 ### Arithmetic instructions
 `INC`, `DEC`, `ADD`, `ADDC`, `SUBB`, `MUL AB`, `DIV AB`, `DA A`  
