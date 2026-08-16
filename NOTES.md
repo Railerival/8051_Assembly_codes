@@ -287,21 +287,13 @@ XCHD A, @R1
 * `ANL A, @Rp`
 * `ANL add, A`
 * `ANL add, #n`
-<br>
-<br>
 * `CLR A` - clear all bits to 0
 * `CPL A` - complement of all bits
-<br>
-<br>
 * `RL` - Rotate a byte to the left,MSB becomes LSB
 * `RR` - Rotate a byte to the right, LSB becomes MSB
 * `RLC`  Same as with RL but with carry
 * `RRC` - Same as with RR but with carry
-<br>
-<br>
 * `SWAP` - Swap upper and lower nibbles.
-<br>
-<br>
 * These instructons can have an source but destination must be `A` or a `direct address`
 
 ### Logical bit instructions
@@ -310,22 +302,14 @@ XCHD A, @R1
 * `SETB` - set a bit to `1`
 * `SETB C` - set a carry to 1
 * `SETB P1.0` - Make `P1.0` high
-<br>
-<br>
 * `CLR C` - clear a bit to 0, carry
 * `CLR P1.0` - clears `P1.0` 
-<br>
-<br>
 * `CPL C`
 * `CPL P1.0`
-<br>
-<br>
 * `ANL C,b` - C = C and bit
 * `ORL C,b` - C = C or bit
 * `ANL C,/b` - C = C and complement of bit
 * `ORL C,/b` - C = C or complement of bit
-<br>
-<br>
 * Works only on bit addressible locatios 
 
 Bit addressible exact locations are not writen here:
