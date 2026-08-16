@@ -30,7 +30,7 @@ Some important internal ram locations:
 `Register Banks` - There are 4 Register banks(Bank 0-3) that can be  controlled by `PSW`s `RS1` - `RS0` bit They are not special and are like general  purpose area/ram but we dont need to call them using their addresses.  
 
 `Bit addressible` - It's just 16 bytes of RAM where you can access individual bits. Normally in RAM you read/write a full byte at a time. But in this area you can do things like:
-```
+```asm
 SETB 25H  ; sets bit 25H to 1
 CLR 20H   ; clears bit 20H to 0
 ```
@@ -42,7 +42,7 @@ This is super useful for flags, LED on/off, switch status etc. That's literally 
 
 ### Importanat SFR addresses
 
-```
+```asm
 ACC       - E0H  
 B         - F0H  
 PORT 0    - 80H  
@@ -57,7 +57,7 @@ R1 BANK 1 - 09H
 
 ### Fullforms
 
-```
+```asm
 A    - Accumulator
 B    - Math register
 PSW  - Program status word(Flags)
@@ -77,7 +77,7 @@ PCON - Power control
 
 `CY | AC | F0 | RS1 | RS0 | OV | -- | P`
 
-```
+```asm
 CY  - carry flag
 AC  - auxillary carry from bit 3 to 4 used in BCD
 F0  - Flag 0, user defined
@@ -161,24 +161,24 @@ idk what this is gang
 #### MOV
 
 * Destination cannot be immediate data
-```
+```asm
 MOV A. #5 ; ✅
 MOV #5, A ; ❌️
 ```
 * All numbers must start with 0-9
-```
+```asm
 MOV A. #25H ; ✅
 MOV A. #0FFH ; ✅
 MOV A, #FFH ; ❌️
 ```
 * Register - register moves using register addressing: R0-7 and A
-```
+```asm
 MOV R0, A ; ✅
 MOV A, R0 ; ✅
 MOV R0, R1 ; ❌️
 ```
 * Invlaid address above 7FH
-```
+```asm
 MOV A, 30H ; ✅
 MOV A, 80H ; ❌️
 ```
@@ -195,7 +195,7 @@ MOV 30H, 30H
 * Indirect addressing is used here always
 * All external data moves involve accumulator
 * 
-```
+```asm
 MOVX @DPTR, A
 MOVX @R0, A
 MOVX A, @R1
@@ -326,7 +326,7 @@ AJMP sadd ; absolute jump, within 2K page
 NOP ; do nothing waste one cycle
 ```
 #### Bit jumps
-```
+```asm
 JC radd ; jump if carry = 1
 JNC radd ; jump if carry = 0
 JB b, radd ; Jump if bit b = 1
@@ -335,14 +335,14 @@ JBC b, radd ; JUmp if bit b = 1, then clear bit
 ```
 eg: `JC OVER` - if carry `1` jump to `OVER`
 #### Byte jumps
-```
+```asm
 JZ radd ; jump if A = 0
 JNZ radd ; jump if A not equal to 0
 DJNZ Rn, radd ; Decrement Rn, jump if not zero
 CJNE A, #n, radd ; Compare A with n and jump if not equal
 ```
 #### Calls and returns
-```
+```asm
 ACALL sadd ; call a subroutine short range
 LCALL ladd ; call a subroutine long range
 RET ; return from a subroutine
